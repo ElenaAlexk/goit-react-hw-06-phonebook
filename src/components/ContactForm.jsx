@@ -1,7 +1,16 @@
+import { useSelector, useDispatch } from 'react-redux';
+import { nanoid } from 'nanoid';
+import { addContacts } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selectors';
+
 export const ContactForm = () => {
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch(); //ф-я відправляє action//
+
   const handleSubmit = event => {
     event.preventDefault();
     const contact = {
+      id: nanoid(),
       name: event.target.elements.name.value,
       number: event.target.elements.number.value,
     };
@@ -11,9 +20,13 @@ export const ContactForm = () => {
       ({ name }) => name.toLowerCase() === contact.name.toLowerCase()
     );
     if (existingContact) {
-      return alert(`${newContact.name}: is already in contacts`);
+      return alert(`${contact.name}: is already in contacts`);
     }
+
+    dispatch(addContacts(contact));
+    event.target.reset(); //очищаємо форму//
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="">

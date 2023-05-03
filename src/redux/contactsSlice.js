@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { nanoid } from 'nanoid';
 
 const initialState = {
   items: [
@@ -12,9 +13,28 @@ const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
-    addContacts(state, action) {},
-    deletContacts(state, action) {},
+    addContacts: {
+      reducer(state, action) {
+        state.push(action.payload);
+      },
+      prepare(name, number) {
+        return {
+          payload: {
+            id: nanoid(),
+            name,
+            number,
+          },
+        };
+      },
+    },
+    deletContacts(state, action) {
+      state.contacts = state.contacts.filter(
+        contact => contact.id !== action.payload
+      );
+    },
   },
 });
 
 //генератори екшенів//
+export const { addContacts, deletContacts } = contactsSlice.actions;
+export const contactsReducer = contactsSlice.reducer;
