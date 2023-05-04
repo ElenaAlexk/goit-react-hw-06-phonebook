@@ -1,11 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { addContacts } from 'redux/contactsSlice';
+import { addContact } from 'redux/contactsSlice';
 import { getContacts } from 'redux/selectors';
 
 export const ContactForm = () => {
   const contacts = useSelector(getContacts);
-  const dispatch = useDispatch(); //ф-я відправляє action//
+  const dispatch = useDispatch(); //посилання на функцію відправки action//
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -19,11 +19,13 @@ export const ContactForm = () => {
     const existingContact = contacts.find(
       ({ name }) => name.toLowerCase() === contact.name.toLowerCase()
     );
+
     if (existingContact) {
       return alert(`${contact.name}: is already in contacts`);
     }
 
-    dispatch(addContacts(contact));
+    //викликаємо генератор екшену та передаємо текст завдання для payload//
+    dispatch(addContact(contact));
     event.target.reset(); //очищаємо форму//
   };
 
