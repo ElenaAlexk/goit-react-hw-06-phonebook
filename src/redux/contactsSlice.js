@@ -13,16 +13,19 @@ const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
+    //addContact: (state, action) => {
+    //state.contacts = [...state.contacts, action.payload];
+    //},
     addContact: {
       reducer(state, action) {
         state.contacts.push(action.payload);
       },
-      prepare(name, number) {
+      prepare(contact) {
         return {
           payload: {
             id: nanoid(),
-            name,
-            number,
+            name: contact.name,
+            number: contact.number,
           },
         };
       },
